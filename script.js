@@ -1,6 +1,6 @@
 var playerWin = 0;
 var compWin = 0;
-let gameCancel = 0;
+var gameCancel = 0;
 var draw = 0;
 let message = "";
 const button = document.getElementById("scriptRun")
@@ -85,6 +85,11 @@ function gameSession(){
 
         if (gameCancel == 1){
             console.log("Game has been canceled!")
+            playerWin = 0;
+            compWin = 0;
+            gameCancel = 0;
+            draw = 0;
+            message = "";
             return;
         }
         else if (playerWin > compWin){
