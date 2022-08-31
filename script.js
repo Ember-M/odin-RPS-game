@@ -4,6 +4,11 @@ var gameCancel = 0;
 var draw = 0;
 let message = "";
 const button = document.getElementById("scriptRun")
+const playerButtons = document.querySelectorAll('.playerButton');
+const playerMove = document.querySelector('.playerMove');
+const compMove = document.querySelector('.compMove');
+const gameResult = document.querySelector(".gameResult");
+const currentScore = document.querySelector('.currentScore');
 
 function getComputerChoice(){
     choiceNum = Math.floor(Math.random()*3);
@@ -18,7 +23,7 @@ function getComputerChoice(){
     }
 };
 
-function getPlayerChoice(){
+/**function getPlayerChoice(){
     playerChoice = prompt("Please enter rock, paper, or scissors!");
 
     if (playerChoice == ("")){
@@ -37,38 +42,68 @@ function getPlayerChoice(){
     }
     return playerChoice.toLowerCase();
 }
+**/
 
+function winState(pWin,cWin){
+
+    if (pWin === 5){
+        gameResult.innerHTML = "Congrats, you win! Select a move to start a new round!";
+        compWin = 0;
+        playerWin = 0;
+
+    }
+    else if (cWin === 5){
+        gameResult.innerHTML = "Sorry, you lose! Select a move to start a new round!";
+        compWin = 0;
+        playerWin = 0;
+    }
+    else{
+        return
+    }
+}
 function gameRound(playerChoice,compChoice){
 
-    playerChoice = getPlayerChoice();
-    compChoice = getComputerChoice();
-    if (gameCancel == 1){
-        return;
-    }
-    else if ((playerChoice === "rock" & compChoice === "paper")||
+    if ((playerChoice === "rock" & compChoice === "paper")||
         (playerChoice === "scissors" & compChoice === "rock")||
         (playerChoice === "paper" & compChoice === "scissors")){
-        message = (`You chose ${playerChoice} \nThe computer chose ${compChoice} \n${compChoice} beats ${playerChoice}, you lose this round!`)
+        gameResult.innerHTML = "";
+        playerMove.innerHTML = `You chose ${playerChoice}`
+        compMove.innerHTML = `The computer chose ${compChoice}`;
         ++compWin
-        draw = 0;
+        currentScore.innerHTML = `The current score is You: ${playerWin} & Computer: ${compWin}`
+        winState(playerWin,compWin);
         }
 
     else if ((playerChoice === "paper" & compChoice === "rock")||
             (playerChoice === "rock" & compChoice === "scissors")||
             (playerChoice === "scissors" & compChoice === "paper")) {
-            message = (`You chose ${playerChoice} \nThe computer chose ${compChoice} \n${playerChoice} beats ${compChoice}, you win this round!`)
-            draw = 0;
+            gameResult.innerHTML = "";
+            playerMove.innerHTML = `You chose ${playerChoice}`
+            compMove.innerHTML = `The computer chose ${compChoice}`;
             ++playerWin
+            currentScore.innerHTML = `The current score is You: ${playerWin} & Computer: ${compWin}`
+            winState(playerWin,compWin);
             }
 
     else {
-        message = (`You chose ${playerChoice} \nThe computer chose ${compChoice} \nIt's a draw!`)
-            draw = 1;
-             }
+        playerMove.innerHTML = `You chose ${playerChoice}`
+        compMove.innerHTML = `The computer chose ${compChoice}`;
+        currentScore.innerHTML = `The current score is You: ${playerWin} & Computer: ${compWin}`
+        winState(playerWin,compWin)
+            }
         
     }
 
-function gameSession(){
+playerButtons.forEach(button =>{
+    button.addEventListener('click', ()=>{
+        playerChoice = button.innerHTML;
+        playerChoice = playerChoice.toLowerCase();
+        compChoice = getComputerChoice();
+        gameRound(playerChoice,compChoice);
+
+    })
+})
+/** function gameSession(){
 
     for (let round = 0; round < 5;){
 
@@ -82,15 +117,8 @@ function gameSession(){
             ++round;
         }
     }
-
-        if (gameCancel == 1){
-            console.log("Game has been canceled!")
-            playerWin = 0;
-            compWin = 0;
-            gameCancel = 0;
-            draw = 0;
-            message = "";
-            return;
+    pWin = playerWin;
+    cWin = compWin;
         }
         else if (playerWin > compWin){
             alert(`Final Score is Player:${playerWin} Computer:${compWin} \nCongrats, you win the game!`);
@@ -104,7 +132,6 @@ function gameSession(){
     draw = 0;
     message = "";
     }
+**/
     
     
-    
-button.addEventListener("click", gameSession);
